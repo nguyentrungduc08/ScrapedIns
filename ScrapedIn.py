@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-__title__ = "ScrapeIn - Tool to Scrape LinkedIn"
-__author__ = 'Danny Chrastil'
-__email__ = 'danny.chrastil@gmail.com'
-__description__ = "A recon tool that allows you to scrape profile search results from LinkedIn"
-__disclaimer__ = "This tool violates TOS of LinkedIn.com. For educational purposes only. Use at your own risk"
-__version__ = '2.0'
+__title__       = "ScrapeIns - Tool to Scrape instagram.com"
+__author__      = 'Trung-Duc Nguyen'
+__email__       = 'nguyentrungduc08@gmail.com'
+__description__ = ""
+__disclaimer__  = "This tool violates TOS of LinkedIn.com. For educational and research purposes only. Use at your own risk"
+__version__     = '1.0'
 
 import sys
 import re
@@ -18,6 +18,7 @@ import subprocess
 import urllib
 import math
 from thready import threaded
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -35,7 +36,12 @@ def get_search():
     #url = "https://www.linkedin.com/voyager/api/search/cluster?count=40&guides=List(v->PEOPLE,facetCurrentCompany->31752)&origin=OTHER&q=guided&start=0"
     #url = 'https://www.linkedin.com/search/results/people/?facetCurrentCompany=%5B"75769"%5D'
     
-    headers = {'Csrf-Token':'ajax:7736867257193100830'}
+    #set header for request
+    #headers = {'Csrf-Token':'ajax:7736867257193100830'}
+    
+    headers = {}
+    headers['Csrf-Token'] = 'ajax:7736867257193100830'
+
     cookies['JSESSIONID'] = 'ajax:7736867257193100830'
     cookies['X-RestLi-Protocol-Version'] = '2.0.0' 
     r = requests.get(url, cookies=cookies, headers=headers)
@@ -55,14 +61,14 @@ def get_search():
         pages = 24
         print "[Notice] LinkedIn only allows 1000 results. Refine keywords to capture all data"
     print "[Info] Fetching %i Pages" % pages
-    print
+    print   
    
     # Set record position for XLSX
     recordpos = 1
 
     for p in range(pages):
         # Request results for each page using the start offset
-        url = "https://www.linkedin.com/voyager/api/search/cluster?count=40&guides=List()&keywords=%s&origin=GLOBAL_SEARCH_HEADER&q=guided&searchId=1489295486936&start=%i" % (search, p*40)
+        #url = "https://www.linkedin.com/voyager/api/search/cluster?count=40&guides=List()&keywords=%s&origin=GLOBAL_SEARCH_HEADER&q=guided&searchId=1489295486936&start=%i" % (search, p*40)
         url = "https://www.linkedin.com/voyager/api/search/cluster?count=40&guides=List(v-%%3EPEOPLE,facetGeoRegion-%%3Ear%%3A0)&keywords=%s&origin=FACETED_SEARCH&q=guided&start=%i" % (search, p*40)
         #url = 'https://www.linkedin.com/voyager/api/search/cluster?count=40&guides=List(v->PEOPLE,facetCurrentCompany->31752)&origin=GLOBAL_SEARCH_HEADER&q=guided&start=%i' % (p*40)
         #url = "https://www.linkedin.com/voyager/api/search/cluster?count=40&guides=List(v->PEOPLE,facetCurrentCompany->%s)&origin=OTHER&q=guided&start=%i" % (p*40)
@@ -123,6 +129,7 @@ def authenticate():
     except Exception, e:
         sys.exit("[Fatal] Could not authenticate to linkedin. %s" % e)
     return cookies
+
 
 if __name__ == '__main__':
     title = """
