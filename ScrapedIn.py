@@ -60,6 +60,7 @@ def get_search():
     if data_total > 1000:
         pages = 24
         print "[Notice] LinkedIn only allows 1000 results. Refine keywords to capture all data"
+        
     print "[Info] Fetching %i Pages" % pages
     print   
    
